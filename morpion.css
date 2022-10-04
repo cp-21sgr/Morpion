@@ -6,11 +6,23 @@ td {
 }
 
 .symbole_0{
-	background-image:url("../images/morpion/0.png");
+	background-image:url("./0.png");
+	opacity: 1;
 }
 
 .symbole_1{
-	background-image:url("../images/morpion/1.png");
+	background-image:url("./1.png");
+	opacity: 1;
+}
+
+.symbole_0_visu{
+	background-image:url("./0.png");
+	opacity: 0.6;
+}
+
+.symbole_1_visu{
+	background-image:url("./1.png");
+	opacity: 0.6;
 }
 
 .green{
@@ -21,4 +33,11 @@ td {
 }
 .blue{
 	background-color: blue;
+}
+
+body{
+	background-color: aqua;
+}
+table{
+	background-color: chartreuse;
 }
