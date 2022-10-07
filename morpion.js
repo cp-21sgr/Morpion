@@ -2,33 +2,49 @@ $(function(){
 
     let win_pattern = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [6,4,2]];
 
-    function min_max (simulTable){
-        for (let i = 0; i < simulTable.length; i++){
-            if (simulTable[i] == -1){
-                simulTable[i] = 1
-                if (setWinner("1", simulTable)){
-                    return simulTable
-                }
-                simulTable[i] = -1
+    let counting_turn_ia = 0
+    let which_turn_to_verify = true
+    function check_win_ia (simultable, nb_turn){
+        let win_turn_array = Array()
+        for (let i = 0; i < simultable.length; i++){
+            if (counting_turn_ia == 0) {
+                win_turn = 0
             }
-
-            if (simulTable[i] == -1){
-                simulTable[i] = 1
-                for (let j = 0; j < simulTable.length; j++) {
-                    if (simulTable[j] == -1) {
-                        simulTable[j] = 0
-                        if (setWinner("0", simulTable)){
-                            simulTable[i] = -1
-                            simulTable[j] = 1
-                            return simulTable
-                        }
-                        simulTable[j] = -1
+            if (simultable[i] == -1){
+                simultable[i] = ((which_turn_to_verify) ? 1 : 0)
+                if (setWinner(((which_turn_to_verify) ? 1 : 0), simultable)){
+                    if (which_turn_to_verify) {
+                        win_turn++
+                    }
+                    else{
+                        win_turn--
                     }
                 }
-                simulTable[i] = -1
+                if (counting_turn_ia + 1 < nb_turn){
+                    counting_turn_ia++
+                    which_turn_to_verify = !which_turn_to_verify
+                    check_win_ia(simultable, nb_turn)
+                }
+                simultable[i] = -1
+            }
+            if (counting_turn_ia == 0) {
+                win_turn_array.push(win_turn)
             }
         }
+        counting_turn_ia--
+        counting_turn_ia = Math.min(Math.max(counting_turn_ia, 0), 5)
+        return win_turn_array
+    }
+
+    function min_max (simulTable){
+        let simulTable_pre = Array()
+
+        simulTable_pre = check_win_ia(simulTable, 5)
+        console.log(simulTable_pre)
+        simulTable[simulTable_pre.indexOf(Math.max.apply(window, simulTable_pre))] = 1
         return simulTable
+
+
     }
 
     function minmax_table (){
